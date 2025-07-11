@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 import pickle
 import trimesh
-import argparse
+import tyro
 from typing import Optional, Tuple
 
 from src.utils import rodrigues_rotation, make_homogeneous, blendshape
@@ -243,17 +243,18 @@ class FLAME(nn.Module):
         return vertices, relative_joints
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--checkpoint', type=str, default='data/generic_flame2023.pkl')
-    parser.add_argument('--save', action='store_true')
-    parser.add_argument('--seed', type=int, default=0)
-    args = parser.parse_args()
+def main(
+    checkpoint_path: str = 'data/generic_flame2023.pkl',
+    save: bool = False,
+    seed: int = 0,
+    control_eyelids: bool = False
+) -> None:
+    """Generate a random FLAME mesh and optionally save it."""
+    np.random.seed(seed)
 
-    np.random.seed(args.seed)
+    model = FLAME(checkpoint_path=checkpoint_path, control_eyelids=control_eyelids)
 
-    model = FLAME()
-
+    # Generate random control parameters within realistic range
     shape = np.random.normal(size=(model.num_shapes,))
     expression = np.random.normal(size=(model.num_expressions,))
     pose = np.pi * np.random.uniform(size=(3,)) / 10
@@ -272,9 +273,12 @@ if __name__ == '__main__':
         right_eye=right_eye
     )
 
-    if args.save:
-        # save vertices as .obj mesh
+    if save:
+        # save vertices as .obj mesh and control parameters as .npz
         mesh = trimesh.Trimesh(vertices, model.faces_numpy)
         mesh.export('flame_output.obj')
-        # # save the control parameters as .npz
         np.savez('flame_params.npz', shape=shape, expression=expression, pose=pose, neck=neck, jaw=jaw, left_eye=left_eye, right_eye=right_eye)
+
+
+if __name__ == '__main__':
+    tyro.cli(main, description="Generate random FLAME mesh")

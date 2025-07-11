@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import List, Tuple
 
 import numpy as np
-import tyro
 
 import viser
 import viser.transforms as tf
@@ -181,8 +180,7 @@ def main(control_eyelids: bool = False) -> None:
     server.scene.set_up_direction("+y")
     server.gui.configure_theme(control_layout="collapsible")
 
-    # Main loop. We'll read pose/shape from the GUI elements, compute the mesh,
-    # and then send the updated mesh in a loop.
+    # Main loop
     model = FLAME(control_eyelids=control_eyelids)
     gui_elements = create_gui_elements(
         server,
