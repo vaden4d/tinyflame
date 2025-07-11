@@ -1,6 +1,6 @@
 # tinyflame
 
-A lightweight PyTorch implementation of the FLAME (Faces Learned with an Articulated Model and Expressions) parametric head model and visualization interface.
+A lightweight PyTorch implementation of the FLAME (Faces Learned with an Articulated Model and Expressions) parametric head model and real-time visualization interface.
 
 ![tinyflame](assets/demo.png)
 
