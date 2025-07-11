@@ -76,7 +76,7 @@ def create_gui_elements(
         gui_shapes = []
         for i in range(num_shapes):
             coeff = server.gui.add_slider(
-                f"Shape #{i+1}", min=-3.0, max=3.0, step=0.01, initial_value=0.0
+                f"Shape #{i + 1}", min=-3.0, max=3.0, step=0.01, initial_value=0.0
             )
             gui_shapes.append(coeff)
             coeff.on_update(set_changed)
@@ -99,7 +99,7 @@ def create_gui_elements(
         gui_expressions = []
         for i in range(num_expressions):
             coeff = server.gui.add_slider(
-                f"Expr #{i+1}", min=-3.0, max=3.0, step=0.01, initial_value=0.0
+                f"Expr #{i + 1}", min=-3.0, max=3.0, step=0.01, initial_value=0.0
             )
             gui_expressions.append(coeff)
             coeff.on_update(set_changed)
