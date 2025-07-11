@@ -15,7 +15,7 @@ The implementation is based on the [FLAME PyTorch code](https://github.com/soubh
 
 ## Installation
 
-### 2.1 Requirements
+### Requirements
 
 - Python 3.12
 - PyTorch
@@ -24,11 +24,11 @@ The implementation is based on the [FLAME PyTorch code](https://github.com/soubh
 - Viser (for visualization)
 - Tyro (for command-line interface)
 
-### 2.2. Download files
+### Download weights
 
 Visit the official [FLAME website](https://flame.is.tue.mpg.de): register or login, accept the license terms, and download the FLAME model `generic_flame2023.pkl` weights (or from the previous releases). Put the weights in the `data/` folder.
 
-### 2.3. Environment Installation
+### Install dependencies
 
 Install the required dependencies using pip:
 
@@ -36,7 +36,7 @@ Install the required dependencies using pip:
 pip install -r requirements.txt
 ```
 
-### 2.4 Check the Installation
+### Check the installation
 
 Run the following command to check if the installation is successful:
 
