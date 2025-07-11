@@ -1,12 +1,12 @@
 # tinyflame
 
-A lightweight PyTorch implementation of the FLAME (Faces Learned with an Articulated Model and Expressions) parametric head model and real-time visualization interface.
+A lightweight PyTorch implementation of the Faces Learned with an Articulated Model and Expressions parametric head model (FLAME) and real-time visualization interface.
 
 ![tinyflame](assets/demo.png)
 
 ## Description
 
-TinyFlame is a minimalistic FLAME implementation and easy-to-use interface that allows you to:
+Minimalistic FLAME implementation and easy-to-use interface that allows you to:
 - Generate 3D face meshes with 300 shape parameters and 100+ expression parameters
 - Control head pose, neck, jaw, and eye rotations
 - Visualize and interact with the 3D face model in real-time using a [Viser](https://github.com/viser-ai/viser) web-based interface
