@@ -126,7 +126,7 @@ class FLAME(nn.Module):
         right_eye: Optional[torch.Tensor] = None
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
-        Computes FLAME vertices given the control parameters
+        Computes FLAME vertices given the tensor control parameters
         Parameters
         ----------
             shape: (N, S) shape coefficients
@@ -203,7 +203,7 @@ class FLAME(nn.Module):
         right_eye: Optional[NDArray] = None,
     ):
         """
-        Computes FLAME vertices given the control parameters
+        Computes FLAME vertices given the numpy control parameters
         Parameters
         ----------
             shape: (S,) shape coefficients
