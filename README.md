@@ -11,7 +11,7 @@ Minimalistic FLAME implementation and easy-to-use interface that allows you to:
 - Control head pose, neck, jaw, and eye rotations
 - Visualize and interact with the 3D face model in real-time using a [Viser](https://github.com/viser-ai/viser) web-based interface
 
-The implementation is based on the [FLAME PyTorch code](https://github.com/soubhiksanyal/FLAME_PyTorch) and provides a clean, differentiable interface for face generation tasks.
+The implementation is based on the [FLAME PyTorch code](https://github.com/soubhiksanyal/FLAME_PyTorch) and provides a clean, differentiable interface for head generation tasks.
 
 ## Installation
 
@@ -41,7 +41,7 @@ pip install -r requirements.txt
 Run the following command to check if the installation is successful:
 
 ```bash
-bash run.sh --test
+bash check.sh --test
 ```
 
 You should see the successfully passed test.
