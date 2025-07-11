@@ -1,0 +1,11 @@
+torch>=2.4.0
+numpy<=1.26.4
+pytest>=8.3.4
+trimesh>=3.9.0
+tyro>=0.5.0
+scipy>=1.14.0
+# specific version of chumpy is required for compatibility with numpy
+chumpy @ git+https://github.com/mattloper/chumpy@9b045ff5d6588a24a0bab52c83f032e2ba433e17
+viser>=0.1.0
+mypy>=1.16.1
+flake8>=7.2.0
