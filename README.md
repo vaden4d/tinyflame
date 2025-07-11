@@ -1,6 +1,8 @@
 # tinyflame
 
-A lightweight PyTorch implementation of the FLAME (Faces Learned with an Articulated Model and Expressions) parametric head model. This project provides a simplified, easy-to-use interface for generating 3D face meshes with controllable shape, expression, and pose parameters.
+A lightweight PyTorch implementation of the FLAME (Faces Learned with an Articulated Model and Expressions) parametric head model. 
+
+![tinyflame](assets/demo.png)
 
 ## Description
 
@@ -24,9 +26,7 @@ The implementation is based on the [FLAME PyTorch code](https://github.com/soubh
 
 ### 2.2. Download files
 
-Register, accept the license terms, and download the FLAME model weights. Visit the official FLAME website:
-- **FLAME Website**: [https://flame.is.tue.mpg.de/](https://flame.is.tue.mpg.de/)
-Put the FLAME weights in the `data/` folder: `generic_flame2023.pkl` or weights from the previous versions.
+Visit the official [FLAME website](https://flame.is.tue.mpg.de): register or login, accept the license terms, and download the FLAME model `generic_flame2023.pkl` weights (or from the previous releases). Put the weights in the `data/` folder.
 
 ### 2.3. Environment Installation
 
