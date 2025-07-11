@@ -23,7 +23,7 @@ class GuiElements:
     is_changed: bool
 
 
-def make_gui_elements(
+def create_gui_elements(
     server: viser.ViserServer,
     num_shapes: int,
     num_expressions: int,
@@ -184,7 +184,7 @@ def main(control_eyelids: bool = False) -> None:
     # Main loop. We'll read pose/shape from the GUI elements, compute the mesh,
     # and then send the updated mesh in a loop.
     model = FLAME(control_eyelids=control_eyelids)
-    gui_elements = make_gui_elements(
+    gui_elements = create_gui_elements(
         server,
         num_shapes=model.num_shapes,
         num_expressions=model.num_expressions,
@@ -224,7 +224,3 @@ def main(control_eyelids: bool = False) -> None:
 
         for i, control in enumerate(gui_elements.joints_controls):
             control.position = joints[i]
-
-
-if __name__ == "__main__":
-    tyro.cli(main, description=__doc__)
