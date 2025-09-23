@@ -13,8 +13,10 @@ from src.flame import FLAME
 @dataclass
 class GuiElements:
     """Structure containing handles for reading from GUI elements."""
-    gui_rgb: viser.GuiInputHandle[Tuple[int, int, int]]
-    gui_wireframe: viser.GuiInputHandle[bool]
+    mesh_color: viser.GuiInputHandle[Tuple[int, int, int]]
+    edges_color: viser.GuiInputHandle[Tuple[int, int, int]]
+    mesh_visibility: viser.GuiInputHandle[bool]
+    edges_visibility: viser.GuiInputHandle[bool]
     gui_shapes: List[viser.GuiInputHandle[float]]
     gui_expressions: List[viser.GuiInputHandle[float]]
     gui_joints: List[viser.GuiInputHandle[Tuple[float, float, float]]]
@@ -38,15 +40,19 @@ def create_gui_elements(
 
     # GUI elements: mesh settings + visibility.
     with tab_group.add_tab("View", viser.Icon.VIEWFINDER):
-        gui_rgb = server.gui.add_rgb("Color", initial_value=(90, 200, 255))
-        gui_wireframe = server.gui.add_checkbox("Wireframe", initial_value=False)
+        mesh_color = server.gui.add_rgb("Color", initial_value=(90, 200, 255))
+        edges_color = server.gui.add_rgb("Edges Color", initial_value=(0, 0, 0))
+        mesh_visibility = server.gui.add_checkbox("Mesh Visibility", initial_value=True)
+        edges_visibility = server.gui.add_checkbox("Edges Visibility", initial_value=True)
         gui_show_controls = server.gui.add_checkbox("Handles", initial_value=True)
         gui_control_size = server.gui.add_slider(
             "Handle size", min=0.0, max=1.0, step=0.01, initial_value=0.5
         )
 
-        gui_rgb.on_update(set_changed)
-        gui_wireframe.on_update(set_changed)
+        mesh_color.on_update(set_changed)
+        edges_color.on_update(set_changed)
+        mesh_visibility.on_update(set_changed)
+        edges_visibility.on_update(set_changed)
 
         @gui_show_controls.on_update
         def _(_):
@@ -164,8 +170,10 @@ def create_gui_elements(
         set_callback_in_closure(i)
 
     out = GuiElements(
-        gui_rgb,
-        gui_wireframe,
+        mesh_color,
+        edges_color,
+        mesh_visibility,
+        edges_visibility,
         gui_shapes,
         gui_expressions,
         gui_joints,
@@ -195,8 +203,15 @@ def main(control_eyelids: bool = False) -> None:
         "/head",
         vertices=vertices,
         faces=model.faces_numpy,
-        wireframe=gui_elements.gui_wireframe.value,
-        color=gui_elements.gui_rgb.value
+        wireframe=False,
+        color=gui_elements.mesh_color.value
+    )
+    edges_handle = server.scene.add_mesh_simple(
+        "/edges",
+        vertices=vertices,
+        faces=model.faces_numpy,
+        wireframe=True,
+        color=gui_elements.edges_color.value
     )
 
     while True:
@@ -215,10 +230,13 @@ def main(control_eyelids: bool = False) -> None:
                 right_eye=np.array(gui_elements.gui_joints[4].value)
             )
             mesh_handle.vertices = vertices
+            edges_handle.vertices = vertices
 
         gui_elements.is_changed = False
-        mesh_handle.wireframe = gui_elements.gui_wireframe.value
-        mesh_handle.color = gui_elements.gui_rgb.value
+        mesh_handle.visible = gui_elements.mesh_visibility.value
+        mesh_handle.color = gui_elements.mesh_color.value
+        edges_handle.color = gui_elements.edges_color.value
+        edges_handle.visible = gui_elements.edges_visibility.value
 
         for i, control in enumerate(gui_elements.joints_controls):
             control.position = joints[i]
