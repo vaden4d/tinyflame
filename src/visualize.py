@@ -15,8 +15,11 @@ class GuiElements:
     """Structure containing handles for reading from GUI elements."""
     mesh_color: viser.GuiInputHandle[Tuple[int, int, int]]
     edges_color: viser.GuiInputHandle[Tuple[int, int, int]]
+    points_color: viser.GuiInputHandle[Tuple[int, int, int]]
     mesh_visibility: viser.GuiInputHandle[bool]
     edges_visibility: viser.GuiInputHandle[bool]
+    points_visibility: viser.GuiInputHandle[bool]
+    points_radius: viser.GuiInputHandle[float]
     gui_shapes: List[viser.GuiInputHandle[float]]
     gui_expressions: List[viser.GuiInputHandle[float]]
     gui_joints: List[viser.GuiInputHandle[Tuple[float, float, float]]]
@@ -42,17 +45,21 @@ def create_gui_elements(
     with tab_group.add_tab("View", viser.Icon.VIEWFINDER):
         mesh_color = server.gui.add_rgb("Color", initial_value=(90, 200, 255))
         edges_color = server.gui.add_rgb("Edges Color", initial_value=(0, 0, 0))
+        points_color = server.gui.add_rgb("Points Color", initial_value=(255, 0, 0))
         mesh_visibility = server.gui.add_checkbox("Mesh Visibility", initial_value=True)
         edges_visibility = server.gui.add_checkbox("Edges Visibility", initial_value=True)
+        points_visibility = server.gui.add_checkbox("Points Visibility", initial_value=True)
+        points_radius = server.gui.add_slider("Points Radius", min=0.0001, max=0.001, step=0.00001, initial_value=0.0005)
         gui_show_controls = server.gui.add_checkbox("Handles", initial_value=True)
-        gui_control_size = server.gui.add_slider(
-            "Handle size", min=0.0, max=1.0, step=0.01, initial_value=0.5
-        )
+        gui_control_size = server.gui.add_slider("Handle size", min=0.0, max=1.0, step=0.01, initial_value=0.5)
 
         mesh_color.on_update(set_changed)
         edges_color.on_update(set_changed)
+        points_color.on_update(set_changed)
         mesh_visibility.on_update(set_changed)
         edges_visibility.on_update(set_changed)
+        points_visibility.on_update(set_changed)
+        points_radius.on_update(set_changed)
 
         @gui_show_controls.on_update
         def _(_):
@@ -170,13 +177,16 @@ def create_gui_elements(
         set_callback_in_closure(i)
 
     out = GuiElements(
-        mesh_color,
-        edges_color,
-        mesh_visibility,
-        edges_visibility,
-        gui_shapes,
-        gui_expressions,
-        gui_joints,
+        mesh_color=mesh_color,
+        edges_color=edges_color,
+        points_color=points_color,
+        mesh_visibility=mesh_visibility,
+        edges_visibility=edges_visibility,
+        points_visibility=points_visibility,
+        points_radius=points_radius,
+        gui_shapes=gui_shapes,
+        gui_expressions=gui_expressions,
+        gui_joints=gui_joints,
         joints_controls=joints_controls,
         is_changed=True
     )
@@ -213,6 +223,13 @@ def main(control_eyelids: bool = False) -> None:
         wireframe=True,
         color=gui_elements.edges_color.value
     )
+    points_handle = server.scene.add_point_cloud(
+        "/points",
+        points=vertices,
+        colors=np.tile(np.array(gui_elements.points_color.value) / 255.0, (len(vertices), 1)),
+        point_size=gui_elements.points_radius.value,
+        point_shape="circle"
+    )
 
     while True:
         time.sleep(0.005)
@@ -231,12 +248,16 @@ def main(control_eyelids: bool = False) -> None:
             )
             mesh_handle.vertices = vertices
             edges_handle.vertices = vertices
+            points_handle.points = vertices
 
         gui_elements.is_changed = False
         mesh_handle.visible = gui_elements.mesh_visibility.value
         mesh_handle.color = gui_elements.mesh_color.value
         edges_handle.color = gui_elements.edges_color.value
+        points_handle.colors = np.tile(np.array(gui_elements.points_color.value) / 255.0, (len(vertices), 1))
         edges_handle.visible = gui_elements.edges_visibility.value
+        points_handle.visible = gui_elements.points_visibility.value
+        points_handle.point_size = gui_elements.points_radius.value
 
         for i, control in enumerate(gui_elements.joints_controls):
             control.position = joints[i]
